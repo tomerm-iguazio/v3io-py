@@ -190,7 +190,7 @@ class Transport(abstract.Transport):
         if ssl_context is None:
             return http.client.HTTPConnection(host, blocksize=3000)
 
-        return http.client.HTTPSConnection(host, context=ssl_context)
+        return http.client.HTTPSConnection(host, context=ssl_context, blocksize=4000)
 
     def _parse_endpoint(self, endpoint):
         if endpoint.startswith("http://"):
