@@ -162,6 +162,7 @@ class Transport(abstract.Transport):
         try:
             try:
                 connection.request(request.method, path, request.body, request.headers)
+                print("_send_request_on_connection: connection.request succeed")
             except self._send_request_exceptions as e:
                 self._logger.debug_with(
                     "Disconnected while attempting to send. Recreating connection and retrying",
@@ -169,6 +170,7 @@ class Transport(abstract.Transport):
                     e_msg=e,
                     connection=connection,
                 )
+                print(f"_send_request_on_connection: in exception")
                 connection.close()
                 connection = self._create_connection(self._host, self._ssl_context)
                 request.transport.connection_used = connection
@@ -187,6 +189,7 @@ class Transport(abstract.Transport):
             self._free_connections.put(connection, block=True)
 
     def _create_connection(self, host, ssl_context):
+        print(f"_create_connection: self._host {self._host}")
         if ssl_context is None:
             return http.client.HTTPConnection(host, blocksize=3000)
 
