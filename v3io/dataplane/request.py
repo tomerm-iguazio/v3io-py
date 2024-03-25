@@ -391,7 +391,7 @@ def _encode(method, container_name, access_key, path, query, headers, body):
         path = container_name
 
     headers, body = _resolve_body_and_headers(access_key, headers, body)
-    print(f"len v3io body after encode: {len(body)}, headers: {headers}")
+    print(f"len v3io body after encode: {len(body) if body else 0}, headers: {headers}")
 
     return method, path, query, headers, body
 
