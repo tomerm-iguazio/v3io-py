@@ -84,7 +84,7 @@ class Transport(abstract.Transport):
         try:
             body = request.encoder_args.get('body')
             len_body = len(body) if body else 0
-            print(f"send_request: request encoder args: {request.encoder_args}")
+            #print(f"send_request: request encoder args: {request.encoder_args}")
             print(f"send_request: len body {len_body}")
             return self._send_request_on_connection(request, connection)
         except BaseException as e:

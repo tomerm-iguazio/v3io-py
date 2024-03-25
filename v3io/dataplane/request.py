@@ -124,7 +124,7 @@ def encode_put_object(container_name, access_key, kwargs):
         headers = {"Range": "-1"}
     len_body = len(kwargs['body']) if kwargs['body'] else 0
     print(f"body in v3io len (encode_put_object): {len_body}")
-    print(f"kwargs: {kwargs}")
+    #print(f"kwargs: {kwargs}")
     return _encode("PUT", container_name, access_key, kwargs["path"], None, headers, kwargs["body"])
 
 
@@ -392,7 +392,8 @@ def _encode(method, container_name, access_key, path, query, headers, body):
         path = container_name
 
     headers, body = _resolve_body_and_headers(access_key, headers, body)
-    print(f"len v3io body after encode: {len(body) if body else 0}, headers: {headers}")
+    print(f"encode: len v3io body after : {len(body) if body else 0}")
+    #print(f"encode: headers: {headers}")
 
     return method, path, query, headers, body
 
