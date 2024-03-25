@@ -80,7 +80,7 @@ class Transport(abstract.Transport):
         # TODO: consider getting param of whether we should block or
         #       not (wait for connection to be free or raise exception)
         connection = self._free_connections.get(block=True, timeout=None)
-
+        print(f"send_request: type(connection): {type(connection)}")
         try:
             body = request.encoder_args.get('body')
             len_body = len(body) if body else 0
