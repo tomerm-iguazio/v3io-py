@@ -188,7 +188,7 @@ class Transport(abstract.Transport):
 
     def _create_connection(self, host, ssl_context):
         if ssl_context is None:
-            return http.client.HTTPConnection(host)
+            return http.client.HTTPConnection(host, blocksize=3000)
 
         return http.client.HTTPSConnection(host, context=ssl_context)
 
