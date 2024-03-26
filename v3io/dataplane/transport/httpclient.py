@@ -175,7 +175,8 @@ class Transport(abstract.Transport):
                 connection.close()
                 connection = self._create_connection(self._host, self._ssl_context)
                 request.transport.connection_used = connection
-                print(f"_send_request_on_connection_exception: len(request.body) {len(request.body)}"
+                print(f"_send_request_on_connection_exception: len(request.body)"
+                      f" {len(request.body) if request.body else None}"
                       f" type: {type(request.body)}")
                 connection.request(request.method, path, request.body, request.headers)
         except BaseException as e:
