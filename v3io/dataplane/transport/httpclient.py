@@ -161,6 +161,7 @@ class Transport(abstract.Transport):
 
         try:
             try:
+                print(f"_send_request_on_connection: len(request.body) {len(request.body)} type: {type(request.body)}")
                 connection.request(request.method, path, request.body, request.headers)
                 print("_send_request_on_connection: connection.request succeed")
             except self._send_request_exceptions as e:
@@ -170,10 +171,12 @@ class Transport(abstract.Transport):
                     e_msg=e,
                     connection=connection,
                 )
-                print(f"_send_request_on_connection: in exception")
+                print(f"_send_request_on_connection: in exception, exception type: {type(e)}, message: {e}")
                 connection.close()
                 connection = self._create_connection(self._host, self._ssl_context)
                 request.transport.connection_used = connection
+                print(f"_send_request_on_connection_exception: len(request.body) {len(request.body)}"
+                      f" type: {type(request.body)}")
                 connection.request(request.method, path, request.body, request.headers)
         except BaseException as e:
             self._logger.error_with(
