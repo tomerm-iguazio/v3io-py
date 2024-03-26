@@ -162,7 +162,8 @@ class Transport(abstract.Transport):
 
         try:
             try:
-                print(f"_send_request_on_connection: len(request.body), qsize: {self._free_connections.qsize()}"
+                print(f"_send_request_on_connection: len(request.body), qsize: {self._free_connections.qsize()},"
+                      f" block_size: {connection.blocksize} len:"
                       f" {len(request.body) if request.body else None} type: {type(request.body)}")
                 connection.request(request.method, path, request.body, request.headers)
                 print("_send_request_on_connection: connection.request succeed")

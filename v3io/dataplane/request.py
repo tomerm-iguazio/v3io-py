@@ -120,8 +120,8 @@ def encode_put_object(container_name, access_key, kwargs):
     headers = None
 
     # if the append flag is passed, add a range header
-    if kwargs["append"]:
-        headers = {"Range": "-1"}
+    # if kwargs["append"]:
+    #     headers = {"Range": "-1"}
     len_body = len(kwargs['body']) if kwargs['body'] else 0
     print(f"body in v3io len (encode_put_object): {len_body}")
     #print(f"kwargs: {kwargs}")
