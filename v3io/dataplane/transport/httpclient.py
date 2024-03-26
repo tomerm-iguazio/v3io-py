@@ -161,7 +161,8 @@ class Transport(abstract.Transport):
 
         try:
             try:
-                print(f"_send_request_on_connection: len(request.body) {len(request.body)} type: {type(request.body)}")
+                print(f"_send_request_on_connection: len(request.body)"
+                      f" {len(request.body) if request.body else None} type: {type(request.body)}")
                 connection.request(request.method, path, request.body, request.headers)
                 print("_send_request_on_connection: connection.request succeed")
             except self._send_request_exceptions as e:
