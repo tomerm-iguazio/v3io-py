@@ -197,9 +197,13 @@ class Transport(abstract.Transport):
             self._free_connections.put(connection, block=True)
 
     def _create_connection(self, host, ssl_context):
-        print(f"_create_connection: self._host {self._host} host:{host} ssl_context:{ssl_context}")
+        import random
+        random_number = random.randint(3000, 5000)
+        print(f"_create_connection: self._host {self._host} host:{host} ssl_context:{ssl_context},"
+              f" block_size: {random_number}")
+
         if ssl_context is None:
-            return http.client.HTTPConnection(host, blocksize=3000)
+            return http.client.HTTPConnection(host, blocksize=random_number)
 
         return http.client.HTTPSConnection(host, context=ssl_context, blocksize=4000)
 
