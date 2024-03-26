@@ -17,6 +17,7 @@ import queue
 import socket
 import ssl
 import sys
+import traceback
 
 import v3io.dataplane.request
 import v3io.dataplane.response
@@ -173,6 +174,8 @@ class Transport(abstract.Transport):
                     connection=connection,
                 )
                 print(f"_send_request_on_connection: in exception, exception type: {type(e)}, message: {e}")
+                print("traceback:")
+                traceback.print_tb(e.__traceback__)
                 connection.close()
                 connection = self._create_connection(self._host, self._ssl_context)
                 request.transport.connection_used = connection
