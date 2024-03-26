@@ -182,7 +182,7 @@ class Transport(abstract.Transport):
                 traceback.print_tb(e.__traceback__)
                 connection.close()
                 if isinstance(request.body, mmap.mmap):
-                    print(f"map position first try: {request.body.tell()}")
+                    print(f"map position second try: {request.body.tell()}")
                 connection = self._create_connection(self._host, self._ssl_context)
                 request.transport.connection_used = connection
                 print(f"_send_request_on_connection_exception: len(request.body)"
