@@ -178,12 +178,12 @@ class Transport(abstract.Transport):
                 print("traceback:")
                 traceback.print_tb(e.__traceback__)
                 connection.close()
-                connection = self._create_connection(self._host, self._ssl_context)
-                request.transport.connection_used = connection
+                #connection = self._create_connection(self._host, self._ssl_context)
+                #request.transport.connection_used = connection
                 print(f"_send_request_on_connection_exception: len(request.body)"
                       f" {len(request.body) if request.body else None}"
                       f" type: {type(request.body)}")
-                connection.request(request.method, path, request.body, request.headers)
+                #  connection.request(request.method, path, request.body, request.headers)  # TODO return
         except BaseException as e:
             self._logger.error_with(
                 "Unhandled exception while sending request", e=type(e), e_msg=e, connection=connection
