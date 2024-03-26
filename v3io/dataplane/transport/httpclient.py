@@ -194,7 +194,7 @@ class Transport(abstract.Transport):
             self._free_connections.put(connection, block=True)
 
     def _create_connection(self, host, ssl_context):
-        print(f"_create_connection: self._host {self._host}")
+        print(f"_create_connection: self._host {self._host} host:{host}")
         if ssl_context is None:
             return http.client.HTTPConnection(host, blocksize=3000)
 
