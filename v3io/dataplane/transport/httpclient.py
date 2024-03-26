@@ -18,7 +18,7 @@ import socket
 import ssl
 import sys
 import traceback
-
+import mmap
 import v3io.dataplane.request
 import v3io.dataplane.response
 
@@ -165,8 +165,11 @@ class Transport(abstract.Transport):
                 print(f"_send_request_on_connection: len(request.body), qsize: {self._free_connections.qsize()},"
                       f" block_size: {connection.blocksize} len:"
                       f" {len(request.body) if request.body else None} type: {type(request.body)}")
+                if isinstance(request.body, mmap.mmap):
+                    print(f"map position first try: {request.body.tell()}")
                 connection.request(request.method, path, request.body, request.headers)
                 print("_send_request_on_connection: connection.request succeed")
+
             except self._send_request_exceptions as e:
                 self._logger.debug_with(
                     "Disconnected while attempting to send. Recreating connection and retrying",
@@ -178,12 +181,14 @@ class Transport(abstract.Transport):
                 print("traceback:")
                 traceback.print_tb(e.__traceback__)
                 connection.close()
-                #connection = self._create_connection(self._host, self._ssl_context)
-                #request.transport.connection_used = connection
+                if isinstance(request.body, mmap.mmap):
+                    print(f"map position first try: {request.body.tell()}")
+                connection = self._create_connection(self._host, self._ssl_context)
+                request.transport.connection_used = connection
                 print(f"_send_request_on_connection_exception: len(request.body)"
                       f" {len(request.body) if request.body else None}"
                       f" type: {type(request.body)}")
-                #  connection.request(request.method, path, request.body, request.headers)  # TODO return
+                connection.request(request.method, path, request.body, request.headers)
         except BaseException as e:
             self._logger.error_with(
                 "Unhandled exception while sending request", e=type(e), e_msg=e, connection=connection
