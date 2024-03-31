@@ -155,7 +155,8 @@ class Transport(abstract.Transport):
             "Tx", connection=connection, method=request.method, path=path, headers=request.headers, body=request.body
         )
         starting_offset = 0
-        if request.body and hasattr(request.body, "seek") and hasattr(request.body, "tell"):
+        is_body_seekable = request.body and hasattr(request.body, "seek") and hasattr(request.body, "tell")
+        if is_body_seekable:
             starting_offset = request.body.tell()
         try:
             try:
@@ -168,7 +169,7 @@ class Transport(abstract.Transport):
                     connection=connection,
                 )
                 connection.close()
-                if request.body and hasattr(request.body, "seek") and hasattr(request.body, "tell"):
+                if is_body_seekable:
                     # If the first connection fails, the pointer of the body might move at the size
                     # of the first connection blocksize.
                     # We need to reset the position of the pointer in order to send the whole file.
