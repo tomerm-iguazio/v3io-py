@@ -102,7 +102,7 @@ def test_first_connection_failure():
             container=container, path=path, body=mmap_obj, raise_for_status=v3io.dataplane.RaiseForStatus.never
         )
         temp_file.seek(0)
-        assert temp_file.read() == data
+        assert temp_file.read() == data, "Binary data read back differs from original data"
 
 
 def test_connection_creation_and_close():
