@@ -1,6 +1,7 @@
 import itertools
 import mmap
 import os
+import random
 import tempfile
 from http.client import CannotSendRequest
 
@@ -91,7 +92,7 @@ def test_first_connection_failure():
     )
     client._transport = mock_transport
     size = 1024
-    data = os.urandom(size)
+    data = random.Random(0).randbytes(size)
     with mmap.mmap(-1, size) as mmap_obj, tempfile.NamedTemporaryFile(mode="w+b", delete=False) as temp_file:
         mmap_obj.write(data)
         mmap_obj.seek(0)
