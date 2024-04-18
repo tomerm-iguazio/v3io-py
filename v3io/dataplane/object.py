@@ -119,6 +119,38 @@ class Model(v3io.dataplane.model.Model):
             locals(),
         )
 
+    def put_by_offset(
+        self, container, path, access_key=None, raise_for_status=None, transport_actions=None, body=None, offset=0
+    ):
+        """Adds a new object to a container, or appends data to an existing object. The option to append data is
+        extension to the S3 PUT Object capabilities
+
+        Parameters
+        ----------
+        container (Required) : str
+            The container on which to operate.
+        path (Required) : str
+            The path of the object
+        access_key (Optional) : str
+            The access key with which to authenticate. Defaults to the V3IO_ACCESS_KEY env.
+        body (Optional) : str
+            The contents of the object
+        append (Optional) : bool
+            If True, the put appends the data to the end of the object. Defaults to False
+
+        Return Value
+        ----------
+        A `Response` object
+        """
+        return self._transport.request(
+            container,
+            access_key or self._access_key,
+            raise_for_status,
+            transport_actions,
+            v3io.dataplane.request.encode_put_by_offset_object,
+            locals(),
+        )
+
     def delete(self, container, path, access_key=None, raise_for_status=None, transport_actions=None):
         """Deletes an object from a container.
 

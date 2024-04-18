@@ -19,6 +19,7 @@ import os.path
 import time
 import unittest
 import unittest.mock
+import uuid
 
 import future.utils
 
@@ -147,6 +148,28 @@ class TestStream(Test):
 
         # check that the stream doesn't exist
         self.assertFalse(self._stream_exists())
+
+    def test_put(self):
+        dest_path = f"/v3io_tests/v3io_py_tests/file_{uuid.uuid4()}.onnx"
+        max_chunk_size = 9
+        data = os.urandom(100)
+
+        buffer_size = len(data)  # in bytes
+        buffer_offset = 0
+
+        while buffer_offset < buffer_size:
+            chunk_size = min(buffer_size - buffer_offset, max_chunk_size)
+            self._client.object.put_by_offset(
+                container=self._container,
+                body=data[buffer_offset : buffer_offset + chunk_size],
+                path=dest_path,
+                offset=buffer_offset,
+            )
+            buffer_offset += chunk_size
+
+        response = self._client.object.get(container=self._container, path=dest_path)
+        print(f"{len(data)} VS {len(response.body)}")
+        assert data == response.body
 
     def test_stream(self):
         # create a stream w/8 shards

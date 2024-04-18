@@ -126,6 +126,23 @@ def encode_put_object(container_name, access_key, kwargs):
     return _encode("PUT", container_name, access_key, kwargs["path"], None, headers, kwargs["body"])
 
 
+def encode_put_by_offset_object(container_name, access_key, kwargs):
+    headers = None
+
+    # if the append flag is passed, add a range header
+    offset = kwargs["offset"]
+    len_body = len(kwargs["body"])
+    bytes_end = len_body + offset
+    if kwargs["offset"]:
+
+        headers = {"Content-Range": f"{offset}-{bytes_end - 1}"}
+        # headers = {"Range": f"bytes={offset}-{bytes_end - 1}/*"}
+        # headers = {"Range": "-1"}
+        # headers = {"Range": f"bytes={len_body}-{bytes_end -1}", "Content_length":str(len_body)}
+
+    return _encode("PUT", container_name, access_key, kwargs["path"], None, headers, kwargs["body"])
+
+
 def encode_delete_object(container_name, access_key, kwargs):
     return _encode("DELETE", container_name, access_key, kwargs["path"], None, None, None)
 
